@@ -1,7 +1,6 @@
 // index.js
 require("dotenv").config({ path: "./.env" });
 
-
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -15,10 +14,8 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false,
-  }
- 
+  },
 });
-
 
 app.get("/", (req, res) => res.send("MCP Server running ✅"));
 
@@ -31,8 +28,9 @@ app.get("/patients", async (req, res) => {
 
 const PORT = process.env.PORT || 3001;
 
+// ✅ Final version after resolving conflict
 app.listen(PORT, () => {
-  console.log(`MCP Server running at http://localhost:${PORT}`);
+  console.log(`MCP Server running at https://health-fullstack.onrender.com`);
 });
 
 const { generatePrescription } = require("./ai");
@@ -177,4 +175,3 @@ app.delete("/patients", async (req, res) => {
     res.status(500).json({ error: "Failed to delete patient" });
   }
 });
-
