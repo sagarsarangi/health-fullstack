@@ -70,16 +70,16 @@ export default function Home() {
 
   return (
     <div className="h-screen bg-gradient-to-br from-blue-400 to-blue-800 flex items-center justify-center p-4">
-      <div className="w-full max-w-4xl mx-4 h-[90vh] min-h-[600px] bg-white rounded-3xl shadow-2xl overflow-hidden border border-white/20 flex flex-col">
+      <div className="w-full max-w-4xl h-[90vh] bg-white rounded-3xl shadow-2xl overflow-hidden border border-white/20 flex flex-col">
         {/* Header with Medical Icon */}
-        <div className="bg-gradient-to-r from-blue-800 to-blue-950 px-6 py-6 md:px-8 md:py-8 text-white text-center flex-shrink-0 relative">
-          <div className="absolute top-3 left-4 md:top-4 md:left-6">
-            <MedicalIcon className="h-8 w-8 md:h-10 md:w-10 text-blue-300" />
+        <div className="bg-gradient-to-r from-blue-800 to-blue-900 px-8 py-8 text-white text-center flex-shrink-0 relative">
+          <div className="absolute top-4 left-6">
+            <MedicalIcon className="h-10 w-10 text-blue-300" />
           </div>
-          <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-1 md:mb-2 tracking-medium">
+          <h1 className="text-4xl md:text-5xl font-bold mb-2 tracking-medium">
             MEDICAL PORTAL
           </h1>
-          <p className="text-blue-200 text-lg md:text-2xl lg:text-3xl font-light">
+          <p className="text-blue-200 text-2xl md:text-3xl font-light">
             {loggedIn ? (
               <span className="font-medium">Welcome Back, Dr. Smith</span>
             ) : (
@@ -89,37 +89,35 @@ export default function Home() {
         </div>
 
         {/* Main Content Area */}
-        <div className="flex-1 overflow-y-auto p-4 md:p-8 bg-white/95 flex flex-col">
+        <div className="flex-grow p-8 bg-white/95 flex flex-col">
           {!loggedIn ? (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8 h-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 h-full">
               {/* Login Form Column */}
-              <div className="flex flex-col justify-center p-2 md:p-0">
-                <div className="space-y-4 md:space-y-6 w-full max-w-md mx-auto">
-                  <h2 className="text-2xl md:text-3xl font-bold text-blue-900 text-center">
+              <div className="flex flex-col justify-center">
+                <div className="space-y-6 max-w-md mx-auto w-full">
+                  <h2 className="text-3xl font-bold text-blue-900 text-center">
                     Doctor Login
                   </h2>
                   <input
                     type="text"
                     placeholder="Medical ID"
-                    className="p-3 md:p-4 border border-gray-300 rounded-lg text-base md:text-lg w-full"
+                    className="p-4 border border-gray-300 rounded-lg text-lg w-full"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
                   <input
                     type="password"
                     placeholder="Secure Password"
-                    className="p-3 md:p-4 border border-gray-300 rounded-lg text-base md:text-lg w-full"
+                    className="p-4 border border-gray-300 rounded-lg text-lg w-full"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
                   {error && (
-                    <div className="text-red-600 font-medium text-sm md:text-base">
-                      {error}
-                    </div>
+                    <div className="text-red-600 font-medium">{error}</div>
                   )}
                   <button
                     onClick={handleLogin}
-                    className="bg-blue-700 hover:bg-blue-800 text-white py-3 md:py-4 px-6 md:px-8 rounded-lg text-lg md:text-xl transition-all w-full"
+                    className="bg-blue-700 hover:bg-blue-800 text-white py-4 px-8 rounded-lg text-xl transition-all w-full"
                   >
                     Authenticate
                   </button>
@@ -127,7 +125,7 @@ export default function Home() {
               </div>
 
               {/* Information Column */}
-              <div className="hidden lg:flex flex-col justify-center border-l border-blue-100 pl-4 md:pl-8">
+              <div className="hidden md:flex flex-col justify-center border-l border-blue-100 pl-8">
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
                     <ShieldCheckIcon className="h-6 w-6 text-blue-600 mt-1" />
@@ -188,7 +186,7 @@ export default function Home() {
               </div>
             </div>
           ) : (
-            <div className="flex flex-col justify-center items-center h-full space-y-4 md:space-y-8 p-4">
+            <div className="flex flex-col justify-center items-center h-full space-y-8">
               <div className="text-center space-y-4">
                 <MedicalIcon className="h-16 w-16 mx-auto text-blue-600" />
                 <h2 className="text-3xl font-bold text-blue-900">
@@ -212,7 +210,7 @@ export default function Home() {
         </div>
 
         {/* Footer */}
-        <div className="border-t border-blue-100 bg-blue-50/70 p-2 md:p-4 text-center text-blue-900 text-xs md:text-sm font-medium flex flex-col md:flex-row justify-between items-center">
+        <div className="border-t border-blue-100 bg-blue-50/70 p-4 text-center text-blue-900 text-m font-medium flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center gap-2 mb-2 md:mb-0">
             <CheckCircleIcon className="h-4 w-4 text-green-500" />
             <span>Secure Connection</span>
