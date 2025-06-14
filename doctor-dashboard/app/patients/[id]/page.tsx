@@ -19,7 +19,9 @@ export default function PatientDetailsPage() {
   useEffect(() => {
     const fetchPrescription = async () => {
       try {
-        const res = await axios.get(`http://localhost:3001/prescription/${id}`);
+        const res = await axios.get(
+          `https://health-fullstack.onrender.com/prescription/${id}`
+        );
         setPrescription(res.data.prescription || "");
         setName(res.data.name || "nil");
         setAge(res.data.age || "nil");
@@ -38,9 +40,12 @@ export default function PatientDetailsPage() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await axios.post(`http://localhost:3001/prescription/${id}`, {
-        prescription,
-      });
+      await axios.post(
+        `https://health-fullstack.onrender.com/prescription/${id}`,
+        {
+          prescription,
+        }
+      );
       alert("✅ Prescription saved!");
     } catch (err) {
       console.error(err);
@@ -56,7 +61,7 @@ export default function PatientDetailsPage() {
     setGenerating(true);
     try {
       const res = await axios.post(
-        "http://localhost:3001/generate-prescription",
+        "https://health-fullstack.onrender.com/generate-prescription",
         {
           symptoms,
         }

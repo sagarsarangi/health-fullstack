@@ -19,7 +19,7 @@ export default function PatientsPage() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/patients")
+      .get("https://health-fullstack.onrender.com/patients")
       .then((res) => setPatients(res.data))
       .catch(() => alert("Failed to fetch patients"))
       .finally(() => setLoading(false));

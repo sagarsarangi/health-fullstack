@@ -25,13 +25,16 @@ export default function DeletePatientPage() {
     }
 
     try {
-      const res = await axios.delete("http://localhost:3001/patients", {
-        data: {
-          name,
-          age: Number(age),
-          gender,
-        },
-      });
+      const res = await axios.delete(
+        "https://health-fullstack.onrender.com/patients",
+        {
+          data: {
+            name,
+            age: Number(age),
+            gender,
+          },
+        }
+      );
 
       setError("");
       setSuccess(res.data.message);

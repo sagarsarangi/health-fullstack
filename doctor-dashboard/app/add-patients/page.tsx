@@ -23,11 +23,14 @@ export default function AddPatientPage() {
     }
 
     try {
-      const res = await axios.post("http://localhost:3001/patients", {
-        name,
-        age: Number(age),
-        gender,
-      });
+      const res = await axios.post(
+        "https://health-fullstack.onrender.com/patients",
+        {
+          name,
+          age: Number(age),
+          gender,
+        }
+      );
 
       const { isReturning, visitCountIncreased } = res.data;
 
