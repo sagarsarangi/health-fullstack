@@ -220,7 +220,7 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-2">
             <CheckCircleIcon className="h-4 w-4 text-green-500" />
-            <span>All systems normal</span>
+            <span>All systems norma</span>
           </div>
         </div>
       </div>
