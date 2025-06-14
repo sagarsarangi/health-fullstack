@@ -16,6 +16,11 @@ const ShieldCheckIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+const ClockIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg {...props} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z" />
+  </svg>
+);
 
 const UserGroupIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="currentColor">
@@ -155,7 +160,15 @@ export default function Home() {
                     </div>
                   </div>
 
-                  
+                  <div className="flex items-start gap-4">
+                    <ClockIcon className="h-6 w-6 text-blue-600 mt-1" />
+                    <div>
+                      <h3 className="text-lg font-semibold">24/7 Access</h3>
+                      <p className="text-gray-600">
+                        Available whenever you need it
+                      </p>
+                    </div>
+                  </div>
                   <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
                     <h3 className="font-medium text-blue-800 mb-2">
                       Demo Credentials
