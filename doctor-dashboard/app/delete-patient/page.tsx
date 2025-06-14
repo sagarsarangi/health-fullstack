@@ -4,7 +4,9 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-export default function AddPatientPage() {
+
+
+export default function DeletePatientPage() {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
@@ -13,7 +15,7 @@ export default function AddPatientPage() {
 
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleDelete = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!name || !age || !gender) {
@@ -23,41 +25,44 @@ export default function AddPatientPage() {
     }
 
     try {
-      const res = await axios.post("http://localhost:3001/patients", {
-        name,
-        age: Number(age),
-        gender,
+      const res = await axios.delete("http://localhost:3001/patients", {
+        data: {
+          name,
+          age: Number(age),
+          gender,
+        },
       });
 
-      const { isReturning, visitCountIncreased } = res.data;
-
       setError("");
-      setSuccess("Patient added successfully");
-
-      // Optional alert
-      if (isReturning && visitCountIncreased > 1) {
-        alert("Thank you for choosing us again!");
-      }
+      setSuccess(res.data.message);
+      setName("");
+      setAge("");
+      setGender("");
 
       setTimeout(() => {
-        router.push("/patients");
-      }, 1500); // 1.5 second delay to show message
-    } catch (err) {
-      console.error(err);
-      setSuccess("");
-      setError("Failed to add patient");
+        router.replace("/patients");
+
+      }, 1500);
+    } catch (error) {
+
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const data = error.response.data as { error?: string };
+        setError(data.error || "An unknown error occurred");
+      } else {
+        setError("Failed to delete patient");
+      }
     }
-  };
+  };    
 
   return (
-    <div className="h-screen flex items-center justify-center bg-gradient-to-br from-blue-400 to-blue-800 p-8">
+    <div className="h-screen flex items-center justify-center bg-gradient-to-br from-red-400 to-red-800 p-8">
       <div className="w-full max-w-5xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
-        <div className="bg-gradient-to-r from-blue-900 to-blue-950 p-6 text-white">
-          <h1 className="text-2xl md:text-3xl font-bold">Add New Patient</h1>
+        <div className="bg-gradient-to-r from-red-900 to-red-950 p-6 text-white">
+          <h1 className="text-2xl md:text-3xl font-bold">Delete Patient</h1>
         </div>
 
         <div className="p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleDelete} className="space-y-6">
             <div>
               <label className="block text-gray-700 font-medium mb-2 text-lg">
                 Patient Name
@@ -114,10 +119,9 @@ export default function AddPatientPage() {
             <div className="pt-4">
               <button
                 type="submit"
-                className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg text-lg flex items-center justify-center gap-2"
+                className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg text-lg"
               >
-                <span>➕</span>
-                <span>Add Patient</span>
+                Delete Patient
               </button>
             </div>
           </form>

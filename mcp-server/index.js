@@ -1,10 +1,10 @@
 // index.js
 require("dotenv").config();
 
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const { Pool } = require('pg');
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const { Pool } = require("pg");
 
 const app = express();
 app.use(cors());
@@ -12,18 +12,19 @@ app.use(bodyParser.json());
 
 // PostgreSQL connection config
 const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'doctor_dashboard',
-  password: '1246',
+  user: "postgres",
+  host: "localhost",
+  database: "doctor_dashboard",
+  password: "1246",
   port: 5432,
 });
 
-app.get('/', (req, res) => res.send('MCP Server running ✅'));
+app.get("/", (req, res) => res.send("MCP Server running ✅"));
 
-// Get all patients
-app.get('/patients', async (req, res) => {
-  const result = await pool.query('SELECT * FROM patients');
+app.get("/patients", async (req, res) => {
+  const result = await pool.query(
+    "SELECT * FROM patients ORDER BY created_at DESC"
+  );
   res.json(result.rows);
 });
 
@@ -54,7 +55,7 @@ app.get("/prescription/:id", async (req, res) => {
 
   try {
     const result = await pool.query(
-      "SELECT name, prescription FROM patients WHERE id = $1",
+      "SELECT name, age, gender, prescription FROM patients WHERE id = $1",
       [id]
     );
 
@@ -69,44 +70,109 @@ app.get("/prescription/:id", async (req, res) => {
   }
 });
 
-// Add new patient
-app.post("/patients", async (req, res) => {
-  const { name, age, gender } = req.body;
-
-  if (!name || !age || !gender) {
-    return res.status(400).json({ error: "Name, age, and gender are required" });
-  }
-
-  try {
-    const result = await pool.query(
-      "INSERT INTO patients (name, age, gender) VALUES ($1, $2, $3) RETURNING *",
-      [name, age, gender]
-    );
-
-    res.status(201).json(result.rows[0]);
-  } catch (err) {
-    console.error("DB error:", err.message);
-    res.status(500).json({ error: "Failed to add patient" });
-  }
-});
-
 app.post("/prescription/:id", async (req, res) => {
   const { id } = req.params;
   const { prescription } = req.body;
 
-  if (!prescription) {
-    return res.status(400).json({ error: "Prescription content is required" });
+  if (prescription == null || prescription === undefined) {
+    return res.status(400).json({ error: "Prescription is required" });
   }
 
   try {
-    await pool.query("UPDATE patients SET prescription = $1 WHERE id = $2", [
-      prescription,
-      id,
-    ]);
+    const result = await pool.query(
+      "UPDATE patients SET prescription = $1 WHERE id = $2 RETURNING *",
+      [prescription, id]
+    );
 
-    res.json({ success: true });
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Patient not found" });
+    }
+
+    res.json({ message: "Prescription updated", patient: result.rows[0] });
   } catch (err) {
     console.error("DB error:", err.message);
     res.status(500).json({ error: "Failed to update prescription" });
   }
 });
+
+app.post("/patients", async (req, res) => {
+  const { name, age, gender } = req.body;
+
+  if (!name || !age || !gender) {
+    return res
+      .status(400)
+      .json({ error: "Name, age, and gender are required" });
+  }
+
+  try {
+    const existing = await pool.query(
+      "SELECT * FROM patients WHERE name = $1 AND age = $2 AND gender = $3",
+      [name, age, gender]
+    );
+
+    if (existing.rows.length > 0) {
+      const currentVisitCount = existing.rows[0].visit_count;
+
+      // Increase visit count & clear prescription
+      const updated = await pool.query(
+        "UPDATE patients SET visit_count = visit_count + 1, prescription = NULL, created_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING *",
+
+        [existing.rows[0].id]
+      );
+
+      return res.status(200).json({
+        patient: updated.rows[0],
+        isReturning: true,
+        visitCountIncreased: currentVisitCount + 1,
+      });
+    } else {
+      // Insert new patient
+      const result = await pool.query(
+        "INSERT INTO patients (name, age, gender, visit_count, prescription) VALUES ($1, $2, $3, 1, NULL) RETURNING *",
+        [name, age, gender]
+      );
+
+      return res
+        .status(201)
+        .json({ patient: result.rows[0], isReturning: false });
+    }
+  } catch (err) {
+    console.error("DB error:", err.message);
+    res.status(500).json({ error: "Failed to add or update patient" });
+  }
+});
+
+app.delete("/patients", async (req, res) => {
+  const { name, age, gender } = req.body;
+
+  if (!name || !age || !gender) {
+    return res
+      .status(400)
+      .json({ error: "Name, age, and gender are required for deletion" });
+  }
+
+  try {
+    const existing = await pool.query(
+      "SELECT * FROM patients WHERE name = $1 AND age = $2 AND gender = $3",
+      [name, age, gender]
+    );
+
+    if (existing.rows.length === 0) {
+      return res.status(404).json({ error: "No matching patient found" });
+    }
+
+    const deleted = await pool.query(
+      "DELETE FROM patients WHERE id = $1 RETURNING *",
+      [existing.rows[0].id]
+    );
+
+    return res.status(200).json({
+      message: "Patient deleted successfully",
+      deletedPatient: deleted.rows[0],
+    });
+  } catch (err) {
+    console.error("DB error:", err.message);
+    res.status(500).json({ error: "Failed to delete patient" });
+  }
+});
+
