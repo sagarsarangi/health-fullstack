@@ -1,5 +1,6 @@
 // index.js
-require("dotenv").config();
+require("dotenv").config({ path: "./.env" });
+
 
 const express = require("express");
 const cors = require("cors");
@@ -10,14 +11,14 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// PostgreSQL connection config
 const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "doctor_dashboard",
-  password: "1246",
-  port: 5432,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+  family: 4, // Force IPv4
 });
+
 
 app.get("/", (req, res) => res.send("MCP Server running ✅"));
 
@@ -28,7 +29,8 @@ app.get("/patients", async (req, res) => {
   res.json(result.rows);
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
+
 app.listen(PORT, () => {
   console.log(`MCP Server running at http://localhost:${PORT}`);
 });
