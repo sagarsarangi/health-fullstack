@@ -67,9 +67,11 @@ export default function PatientsPage() {
         {/* Info Note */}
         <div className="bg-blue-50 border-l-4 border-blue-500 p-5 mx-8 mt-8">
           <p className="text-blue-800 font-medium text-lg">
-            Note: The add and delete patient feature is not required for the assignment as
-            patients are added and deleted via front-desk into the database, but it is
-            implemented to demonstrate the functionality.
+            Note: The add and delete patient feature is not required for the
+            assignment as patients are added and deleted via front-desk into the
+            database, but it is implemented to demonstrate the functionality.
+            <br />
+            Also please dont add too many patients as the database is limited.
           </p>
         </div>
         {/* Highlight Note */}
