@@ -160,15 +160,7 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-4">
-                    <ClockIcon className="h-6 w-6 text-blue-600 mt-1" />
-                    <div>
-                      <h3 className="text-lg font-semibold">24/7 Access</h3>
-                      <p className="text-gray-600">
-                        Available whenever you need it
-                      </p>
-                    </div>
-                  </div>
+                  
                   <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
                     <h3 className="font-medium text-blue-800 mb-2">
                       Demo Credentials
