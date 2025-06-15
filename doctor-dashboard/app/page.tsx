@@ -62,7 +62,7 @@ export default function Home() {
   }, []);
 
   const handleLogin = () => {
-    if (name === "doctor" && password === "pass") {
+    if (name === "doctor" && password === "doctor") {
       setLoggedIn(true);
       setError("");
     } else {
@@ -184,7 +184,7 @@ export default function Home() {
                         <span className="font-medium">ID:</span> doctor
                       </p>
                       <p>
-                        <span className="font-medium">Password:</span> pass
+                        <span className="font-medium">Password:</span> doctor
                       </p>
                     </div>
                   </div>
