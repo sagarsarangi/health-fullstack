@@ -61,7 +61,8 @@ export default function Home() {
     );
   }, []);
 
-  const handleLogin = () => {
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent default form submission
     if (name === "doctor" && password === "doctor") {
       setLoggedIn(true);
       setError("");
@@ -97,34 +98,39 @@ export default function Home() {
               {/* Login Form Column */}
               <div className="flex flex-col justify-center">
                 <div className="space-y-4 md:space-y-6 max-w-md mx-auto w-full">
-                  <h2 className="text-2xl md:text-3xl font-bold text-blue-900 text-center">
-                    Doctor Login
-                  </h2>
-                  <input
-                    type="text"
-                    placeholder="Medical ID"
-                    className="p-3 md:p-4 border border-gray-300 rounded-lg text-base md:text-lg w-full"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                  <input
-                    type="password"
-                    placeholder="Secure Password"
-                    className="p-3 md:p-4 border border-gray-300 rounded-lg text-base md:text-lg w-full"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  {error && (
-                    <div className="text-red-600 font-medium text-sm md:text-base">
-                      {error}
-                    </div>
-                  )}
-                  <button
-                    onClick={handleLogin}
-                    className="bg-blue-700 hover:bg-blue-800 text-white py-3 md:py-4 px-6 md:px-8 rounded-lg text-lg md:text-xl transition-all w-full"
+                  <form
+                    onSubmit={handleLogin}
+                    className="space-y-4 md:space-y-6 max-w-md mx-auto w-full"
                   >
-                    Authenticate
-                  </button>
+                    <h2 className="text-2xl md:text-3xl font-bold text-blue-900 text-center">
+                      Doctor Login
+                    </h2>
+                    <input
+                      type="text"
+                      placeholder="Medical ID"
+                      className="p-3 md:p-4 border border-gray-300 rounded-lg text-base md:text-lg w-full"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                    <input
+                      type="password"
+                      placeholder="Secure Password"
+                      className="p-3 md:p-4 border border-gray-300 rounded-lg text-base md:text-lg w-full"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                    {error && (
+                      <div className="text-red-600 font-medium text-sm md:text-base">
+                        {error}
+                      </div>
+                    )}
+                    <button
+                      onClick={handleLogin}
+                      className="bg-blue-700 hover:bg-blue-800 text-white py-3 md:py-4 px-6 md:px-8 rounded-lg text-lg md:text-xl transition-all w-full"
+                    >
+                      Authenticate
+                    </button>
+                  </form>
                 </div>
               </div>
 
