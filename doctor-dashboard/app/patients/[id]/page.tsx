@@ -91,7 +91,7 @@ export default function PatientDetailsPage() {
     doc.setFontSize(16);
     doc.setTextColor(45, 55, 72); // Dark slate
     doc.setFont("helvetica", "bold");
-    doc.text("Smith Clinic", pageWidth / 2, 25, { align: "center" });
+    doc.text("Digicare Hospital", pageWidth / 2, 25, { align: "center" });
 
     doc.setFontSize(12);
     doc.setFont("helvetica", "normal");
