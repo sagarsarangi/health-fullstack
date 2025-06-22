@@ -14,7 +14,7 @@ const openai = new OpenAI({
 async function generatePrescription(symptoms) {
   try {
     const response = await openai.chat.completions.create({
-      model: "mistralai/mistral-7b-instruct:free",
+      model: "google/gemini-2.5-flash-lite-preview-06-17",
       messages: [
         {
           role: "user",
